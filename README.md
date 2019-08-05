@@ -1,6 +1,7 @@
-Convinient script for setting up vim quickly on a new workstation
+Convenient script for setting up vim quickly on a new workstation
 
-Assumes that vim is installed with either python2 or python3 support and a python interpreter is available.
+Assumes that vim, cmake, and gcc are installed with either python2 or python3 support and a python interpreter
+is available.
 
 To install run the following script and follow the instructions.
 ```bash
