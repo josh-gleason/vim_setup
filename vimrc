@@ -137,10 +137,11 @@ vmap <Leader>a= :Tabularize /=<CR>
 nmap <Leader>a: :Tabularize /:\zs<CR>
 vmap <Leader>a: :Tabularize /:\zs<CR>
 
-" airline
+" vim-airline
 let g:airline_section_b = '%{strftime("%c")}'
 let g:airline_section_y = 'BN: %{bufnr("%")}'
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme = 'wombat'
 
 " ctrlp
 " work from nearest parent with .git, .svm, .idea, etc.. otherwise from cwd
