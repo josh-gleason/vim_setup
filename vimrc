@@ -17,10 +17,11 @@ set showcmd             " display incomplete commands
 set wildmenu            " display completion matches in a status line
 set laststatus=2        " always show status line
 set smartindent         " use smartindent
-set timeout
-set timeoutlen=100
-set textwidth=9999999   " disable auto-wrap text when too wide (i work on too many randomly formatted files for this to make sense)
+set timeout             " enable timeout for escape sequences
+set timeoutlen=100      " lower the timeout length to 100ms
+set textwidth=120       " auto wrap 120 width columns
 set colorcolumn=121     " put a vertical column at 121 characters (encourage 120 char max lines)
+set autochdir           " automatically change directory to the current file
 
 " Space to remove highlight
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
@@ -28,13 +29,12 @@ nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 " compare with original file in veritical split
 command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincmd p | diffthis
 
-" With the following mappings (which require gvim), you can press Alt-Left or Alt-Right to go to the previous or next tabs, and can press Ctrl-Left or Ctrl-Right
+" With the following mappings, you can press Alt-Left or Alt-Right scroll through tabs
 nnoremap <A-Left> :tabprevious<CR>
 nnoremap <A-Right> :tabnext<CR>
-nnoremap <A-.> :bnext<CR>
-nnoremap <A-,> :bprevious<CR>
-nnoremap <silent> <C-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
-nnoremap <silent> <C-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
+" press Ctrl-Left or Ctrl-Right to go scroll through buffers
+nnoremap <C-Left> :bprevious<CR>
+nnoremap <C-Right> :bnext<CR>
 
 " remove the annoying behavior where indentation removed when you enter a #
 inoremap # X#
@@ -61,6 +61,8 @@ Plugin 'sonph/onehalf', {'rtp': 'vim/'}  " all for an extra colorscheme :P
 Plugin 'godlygeek/tabular'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'sheerun/vim-polyglot'
+Plugin 'vim-airline/vim-airline'  " show buffer bar
+Plugin 'vim-airline/vim-airline-themes'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -134,6 +136,11 @@ vmap <Leader>a= :Tabularize /=<CR>
 nmap <Leader>a: :Tabularize /:\zs<CR>
 vmap <Leader>a: :Tabularize /:\zs<CR>
 
+" airline
+let g:airline_section_b = '%{strftime("%c")}'
+let g:airline_section_y = 'BN: %{bufnr("%")}'
+let g:airline#extensions#tabline#enabled = 1
+
 " ctrlp
 " work from nearest parent with .git, .svm, .idea, etc.. otherwise from cwd
 let g:ctrlp_working_path_mode = 'rw'
@@ -141,7 +148,6 @@ let g:ctrlp_working_path_mode = 'rw'
 let g:ctrlp_root_markers = ['.idea', '.ycm_extra_conf.py']
 " if a file is already open, open it again in a new pane instead of switching to the existing pane
 let g:ctrlp_switch_buffer = 'et'
-let g:ctrlp_user_command = 'find %s -type f'
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 " Resume from previous line
