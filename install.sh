@@ -1,15 +1,22 @@
 #!/bin/bash
 
-PY2_PATH=$(which python2)
+VIM_VER=$(vim --version)
+PY_PATH=$(which python)
+if [[ ${VIM_VER} == *"+python3"* ]]; then
+    PY_PATH=$(which python3)
+elif [[ ${VIM_VER} == *"+python"* ]]; then
+    PY_PATH=$(which python2)
+fi
+
 echo ""
 echo "IMPORTANT: Your vim needs to be compiled with python support (either 2 or 3),"
 echo "if compiled with python3 support then use python 3. Use \`vim --version\` to check."
 echo ""
 echo "Provide path to your python interpreter..."
-echo "Press Enter for the default: ${PY2_PATH}"
-read -p '> ' PY2_USER
-if [[ ! -z "$PY2_USER" ]]; then
-    PY2_PATH=$PY2_USER
+echo "Press Enter for the default: ${PY_PATH}"
+read -p '> ' PY_USER
+if [[ ! -z "${PY_USER}" ]]; then
+    PY_PATH=${PY_USER}
 fi
 
 mkdir -p ${HOME}/.vim/bundle
@@ -30,9 +37,9 @@ if test -f ${HOME}/.vimrc; then
 fi
 
 echo "creating ${HOME}/.vimrc"
-$PY2_PATH util/replace_str.py vimrc ${HOME}/.vimrc "__PYTHON2_INTERPRETER__" "${PY2_PATH}"
+${PY_PATH} util/replace_str.py vimrc ${HOME}/.vimrc "__PYTHON2_INTERPRETER__" "${PY_PATH}"
 
 vim +PluginInstall +qall
 
-cd ${HOME}/.vim/bundle/YouCompleteMe && python2 install.py --clang-completer
+cd ${HOME}/.vim/bundle/YouCompleteMe && ${PY_PATH} install.py --clang-completer
 
