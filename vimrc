@@ -22,6 +22,7 @@ set timeoutlen=100      " lower the timeout length to 100ms
 set textwidth=120       " auto wrap 120 width columns
 set colorcolumn=121     " put a vertical column at 121 characters (encourage 120 char max lines)
 set autochdir           " automatically change directory to the current file
+set clipboard=unnamedplus   " use system clipboard for vim
 
 " Space to remove highlight
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
