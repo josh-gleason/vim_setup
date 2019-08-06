@@ -18,7 +18,7 @@ set wildmenu            " display completion matches in a status line
 set laststatus=2        " always show status line
 set smartindent         " use smartindent
 set timeout             " enable timeout for escape sequences
-set timeoutlen=100      " lower the timeout length to 100ms
+set timeoutlen=1000     " lower the timeout length to 1000ms
 set textwidth=120       " auto wrap 120 width columns
 set colorcolumn=121     " put a vertical column at 121 characters (encourage 120 char max lines)
 set autochdir           " automatically change directory to the current file
