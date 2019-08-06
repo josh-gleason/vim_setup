@@ -138,7 +138,8 @@ nmap <Leader>a: :Tabularize /:\zs<CR>
 vmap <Leader>a: :Tabularize /:\zs<CR>
 
 " vim-airline
-let g:airline_section_b = '%{strftime("%c")}'
+let g:airline_section_b = airline#section#create_left(['file'])
+let g:airline_section_c = airline#section#create_left(['path'])
 let g:airline_section_y = 'BN: %{bufnr("%")}'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme = 'wombat'
