@@ -19,10 +19,10 @@ set laststatus=2        " always show status line
 set smartindent         " use smartindent
 set timeout             " enable timeout for escape sequences
 set timeoutlen=1000     " lower the timeout length to 1000ms
-set textwidth=120       " auto wrap 120 width columns
-set colorcolumn=121     " put a vertical column at 121 characters (encourage 120 char max lines)
+set textwidth=999999999 " dont autowrap its annoying
+"set colorcolumn=121     " put a vertical column at 121 characters (encourage 120 char max lines)
 set autochdir           " automatically change directory to the current file
-set clipboard=unnamedplus   " use system clipboard for vim
+set clipboard=unnamedplus   " use system clipboard for vim (only works if +clipboard in vim --version)
 
 " Space to remove highlight
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
@@ -61,9 +61,10 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'sonph/onehalf', {'rtp': 'vim/'}  " all for an extra colorscheme :P
 Plugin 'godlygeek/tabular'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'sheerun/vim-polyglot'
+"Plugin 'sheerun/vim-polyglot'
 Plugin 'vim-airline/vim-airline'  " show buffer bar
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'luochen1990/rainbow'      " rainbow parenthesis
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required

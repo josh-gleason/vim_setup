@@ -23,6 +23,9 @@ mkdir -p ${HOME}/.vim/bundle
 
 echo "Copying colors"
 rsync -rP colors ~/.vim/
+if [ $? -ne 0 ]; then
+    cp -rv colors ~/.vim/
+fi
 
 if test -f ${HOME}/.vim/bundle/Vundle.vim; then
     echo "Vundle already there"
