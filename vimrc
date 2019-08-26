@@ -19,10 +19,19 @@ set laststatus=2        " always show status line
 set smartindent         " use smartindent
 set timeout             " enable timeout for escape sequences
 set timeoutlen=1000     " lower the timeout length to 1000ms
-set textwidth=999999999 " dont autowrap its annoying
+set textwidth=0         " dont autowrap code
+set wrapmargin=0        " "
 "set colorcolumn=121     " put a vertical column at 121 characters (encourage 120 char max lines)
 set autochdir           " automatically change directory to the current file
 set clipboard=unnamedplus   " use system clipboard for vim (only works if +clipboard in vim --version)
+
+" Tab Width
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
+" Makefiles need tabs
+autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0 tabstop=8
 
 " Space to remove highlight
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
@@ -51,17 +60,13 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
-Plugin 'elzr/vim-json'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'tpope/vim-fugitive'
-Plugin 'Mephistophiles/vim-sleuth'    " fork of tpope's adds default tab width
-Plugin 'justinmk/vim-sneak'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'sonph/onehalf', {'rtp': 'vim/'}  " all for an extra colorscheme :P
 Plugin 'godlygeek/tabular'
 Plugin 'ctrlpvim/ctrlp.vim'
-"Plugin 'sheerun/vim-polyglot'
 Plugin 'vim-airline/vim-airline'  " show buffer bar
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'luochen1990/rainbow'      " rainbow parenthesis
@@ -127,9 +132,6 @@ let g:NERDCommentEmptyLines = 1      " allow commenting empty lines
 
 " NERDTree, use <C-d> to toggle directory structure
 noremap <C-d> :NERDTreeToggle<CR>
-
-" vim-sleuth
-let g:sleuth_default_width = 4       " default width of tabs
 
 " tabularize
 " select text and press <\><a><=,:> to align with respect to the given token
