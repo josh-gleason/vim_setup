@@ -19,10 +19,18 @@ set laststatus=2        " always show status line
 set smartindent         " use smartindent
 set timeout             " enable timeout for escape sequences
 set timeoutlen=1000     " lower the timeout length to 1000ms
-set textwidth=120       " auto wrap 120 width columns
-set colorcolumn=121     " put a vertical column at 121 characters (encourage 120 char max lines)
+set textwidth=0         " dont autowrap code
+set wrapmargin=0        " "
 set autochdir           " automatically change directory to the current file
-set clipboard=unnamedplus   " use system clipboard for vim
+set clipboard=unnamedplus   " use system clipboard for vim (only works if +clipboard in vim --version)
+
+" Tab Width
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
+" Makefiles need tabs
+autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0 tabstop=8
 
 " Space to remove highlight
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
@@ -51,19 +59,16 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
-Plugin 'elzr/vim-json'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'tpope/vim-fugitive'
-Plugin 'Mephistophiles/vim-sleuth'    " fork of tpope's adds default tab width
-Plugin 'justinmk/vim-sneak'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'sonph/onehalf', {'rtp': 'vim/'}  " all for an extra colorscheme :P
 Plugin 'godlygeek/tabular'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'sheerun/vim-polyglot'
 Plugin 'vim-airline/vim-airline'  " show buffer bar
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'kien/rainbow_parentheses.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -91,7 +96,7 @@ let g:ycm_global_ycm_extra_conf = '${HOME}/.vim/bundle/YouCompleteMe/.ycm_extra_
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_log_level = "DEBUG"
-let g:ycm_server_python_interpreter = '__PYTHON2_INTERPRETER__'
+let g:ycm_server_python_interpreter = '/opt/local/stow/Python-2.7.8/bin/python2'
 let g:ycm_goto_buffer_command = 'same-buffer'
 " map <\><d> to GoTo and <\><f> to FixIt. Use <C-o> to go back
 noremap <leader>d :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -127,9 +132,6 @@ let g:NERDCommentEmptyLines = 1      " allow commenting empty lines
 " NERDTree, use <C-d> to toggle directory structure
 noremap <C-d> :NERDTreeToggle<CR>
 
-" vim-sleuth
-let g:sleuth_default_width = 4       " default width of tabs
-
 " tabularize
 " select text and press <\><a><=,:> to align with respect to the given token
 nmap <Leader>a= :Tabularize /=<CR>
@@ -143,6 +145,36 @@ let g:airline_section_c = airline#section#create_left(['path'])
 let g:airline_section_y = 'BN: %{bufnr("%")}'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme = 'wombat'
+
+" rainbow
+let g:rbpt_loadcmd_toggle = 1
+let g:rbpt_max = 18
+let g:rbpt_colorpairs = [
+    \ ['gray',   '#c654ff'],
+    \ ['green',  '#ff8921'],
+    \ ['brown',  '#dbffa6'],
+    \ ['white',  '#4778ff'],
+    \ ['blue',   '#ff91f0'],
+    \ ['magenta','#ffcfa6'],
+    \ ['cyan',   '#54ff8d'],
+    \ ['yellow', '#9eb8ff'],
+    \ ['red',    '#ff3083'],
+    \ ['gray',   '#c654ff'],
+    \ ['green',  '#ff8921'],
+    \ ['brown',  '#dbffa6'],
+    \ ['white',  '#4778ff'],
+    \ ['blue',   '#ff91f0'],
+    \ ['magenta','#ffcfa6'],
+    \ ['cyan',   '#54ff8d'],
+    \ ['yellow', '#9eb8ff'],
+    \ ['red',    '#ff3083']
+    \ ]
+
+au VimEnter * RainbowParenthesesActivate
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+au Syntax * RainbowParenthesesLoadChevrons
 
 " ctrlp
 " work from nearest parent with .git, .svm, .idea, etc.. otherwise from cwd
