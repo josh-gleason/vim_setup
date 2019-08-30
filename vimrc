@@ -21,7 +21,8 @@ set timeout             " enable timeout for escape sequences
 set timeoutlen=1000     " lower the timeout length to 1000ms
 set textwidth=0         " dont autowrap code
 set wrapmargin=0        " "
-set autochdir           " automatically change directory to the current file
+"set colorcolumn=121    " put a vertical column at 121 characters (encourage 120 char max lines)
+"set autochdir          " automatically change directory to the current file
 set clipboard=unnamedplus   " use system clipboard for vim (only works if +clipboard in vim --version)
 
 " Tab Width
