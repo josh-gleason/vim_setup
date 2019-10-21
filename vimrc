@@ -175,7 +175,6 @@ au VimEnter * RainbowParenthesesActivate
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
-au Syntax * RainbowParenthesesLoadChevrons
 
 " ctrlp
 " work from nearest parent with .git, .svm, .idea, etc.. otherwise from cwd
