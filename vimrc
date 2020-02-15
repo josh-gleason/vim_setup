@@ -46,6 +46,10 @@ nnoremap <A-Right> :tabnext<CR>
 nnoremap <C-Left> :bprevious<CR>
 nnoremap <C-Right> :bnext<CR>
 
+" Dont cut replaced text when pasting in visual mode
+xnoremap p "_dP
+vnoremap p "_dP
+
 " remove the annoying behavior where indentation removed when you enter a #
 inoremap # X#
 
