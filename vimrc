@@ -33,6 +33,9 @@ set expandtab
 " Makefiles need tabs
 autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0 tabstop=8
 
+" map = to use autopep8 in python files rather than default auto-indent
+autocmd FileType python set equalprg=autopep8\ -
+
 " Space to remove highlight
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
@@ -155,10 +158,11 @@ let g:airline_theme = 'wombat'
 let g:rbpt_loadcmd_toggle = 1
 let g:rbpt_max = 18
 let g:rbpt_colorpairs = [
+    \ ['yellow', '#9eb8ff'],
+    \ ['red',    '#ff3083'],
     \ ['gray',   '#c654ff'],
     \ ['green',  '#ff8921'],
     \ ['brown',  '#dbffa6'],
-    \ ['white',  '#4778ff'],
     \ ['blue',   '#ff91f0'],
     \ ['magenta','#ffcfa6'],
     \ ['cyan',   '#54ff8d'],
@@ -167,7 +171,6 @@ let g:rbpt_colorpairs = [
     \ ['gray',   '#c654ff'],
     \ ['green',  '#ff8921'],
     \ ['brown',  '#dbffa6'],
-    \ ['white',  '#4778ff'],
     \ ['blue',   '#ff91f0'],
     \ ['magenta','#ffcfa6'],
     \ ['cyan',   '#54ff8d'],
@@ -202,3 +205,9 @@ augroup resCur
   autocmd BufWinEnter * call ResCur()
 augroup END
 
+" map = to use autopep8 in python files rather than default auto-indent
+autocmd FileType python set equalprg=autopep8\ --max-line-length\ 120\ -
+
+" fix strange symbols caused by syntastic on shutdown (https://stackoverflow.com/questions/62148994)
+let &t_TI = ""
+let &t_TE = ""

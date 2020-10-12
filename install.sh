@@ -46,3 +46,5 @@ vim +PluginInstall +qall
 
 cd ${HOME}/.vim/bundle/YouCompleteMe && ${PY_PATH} install.py --clang-completer
 
+echo "Attempting to install flake8 and autopep8"
+${PY_PATH} -m pip install --upgrade flake8 autopep8
