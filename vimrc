@@ -104,7 +104,7 @@ let g:ycm_global_ycm_extra_conf = '${HOME}/.vim/bundle/YouCompleteMe/.ycm_extra_
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_log_level = "DEBUG"
-let g:ycm_server_python_interpreter = '__PYTHON2_INTERPRETER__'
+let g:ycm_server_python_interpreter = '__PYTHON_INTERPRETER__'
 let g:ycm_goto_buffer_command = 'same-buffer'
 " map <\><d> to GoTo and <\><f> to FixIt. Use <C-o> to go back
 noremap <leader>d :YcmCompleter GoToDefinitionElseDeclaration<CR>
