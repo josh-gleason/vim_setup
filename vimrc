@@ -77,6 +77,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-airline/vim-airline'  " show buffer bar
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'vim-python/python-syntax'   " better python highlighting (format strings etc...)
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -98,6 +99,9 @@ colorscheme wombat256ln         " original version by Lars Neilson from which wo
 "colorscheme summerfruit256      " very bright
 "colorscheme primary             " google's colors
 "colorscheme onehalflight        " extremely well supported (works virtually everywhere)
+
+" turn on improved python syntax highlighting
+let g:python_highlight_all = 1
 
 " YouCompleteMe
 let g:ycm_global_ycm_extra_conf = '${HOME}/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
@@ -129,6 +133,7 @@ let g:syntastic_cpp_auto_refresh_includes = 1
 let g:syntastic_enable_signs = 1
 " configuration for flake8 is at ~/.config/flake8, to create local config make either .flake8 or tox.ini in the root of the project
 let g:syntastic_python_checkers=['flake8']   " To install use pip install flake8, should be installed for each virtualenv
+let g:syntastic_python_flake8_args='--config=${HOME}/.config/flake8'
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 

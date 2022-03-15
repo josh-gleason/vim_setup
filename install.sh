@@ -64,6 +64,14 @@ vim +PluginInstall +qall
 
 cd ${HOME}/.vim/bundle/YouCompleteMe && ${PY_PATH} install.py --clangd-completer
 
+if test -f ${HOME}/.config/flake8; then
+    echo "${HOME}/.config/flake8 already exists"
+else
+    echo "installing flake8 config to ${HOME}/.config/flake8"
+    mkdir -p ${HOME}/.config
+    cp -v flake8 ${HOME}/.config/flake8
+fi
+
 if [[ $(hostname) = *.umiacs.umd.edu ]]; then
     # Coolest tool ever. Replace needed library with absolute path to gcc/9.3.0 so that not dependent on LD_LIBRARY_PATH
     patchelf --replace-needed libgcc_s.so.1 /opt/local/stow/gcc-9.3.0/lib64/libgcc_s.so.1 "$HOME/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clangd/output/bin/clangd"
