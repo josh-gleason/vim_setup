@@ -67,7 +67,6 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
-Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'tpope/vim-fugitive'
 Plugin 'flazz/vim-colorschemes'
@@ -78,6 +77,7 @@ Plugin 'vim-airline/vim-airline'  " show buffer bar
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'vim-python/python-syntax'   " better python highlighting (format strings etc...)
+Plugin 'cespare/vim-toml'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -123,9 +123,9 @@ let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 
 " Utilisnips (and vim-snippets)
 " better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+"let g:UltiSnipsExpandTrigger = "<tab>"
+"let g:UltiSnipsJumpForwardTrigger = "<tab>"
+"let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 " Syntastic
 let g:syntastic_cpp_check_header = 1
