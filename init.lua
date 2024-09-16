@@ -105,7 +105,10 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
--- Color and basic settings
+-- override italic setting globally then load colorscheme
+wombat_lush_colors = require("lush_theme.wombat_lush_colors")
+wombat_lush_colors.italic = false
+
 vim.cmd[[colorscheme wombat_classic]]
 
 -- ALE Settings
