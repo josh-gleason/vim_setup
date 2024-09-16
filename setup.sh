@@ -2,8 +2,8 @@
 
 # Variables
 NEOVIM_URL="https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
-NODEJS_VERSION="v20.17.0"  # You can change this to the desired Node.js version
-NODEJS_DISTRO="linux-x64"  # Adjust if using a different architecture
+NODEJS_VERSION="v20.17.0"   # LTS version
+NODEJS_DISTRO="linux-x64"
 NODEJS_URL="https://nodejs.org/dist/$NODEJS_VERSION/node-$NODEJS_VERSION-$NODEJS_DISTRO.tar.xz"
 INSTALL_DIR="$HOME/.local"
 BIN_DIR="$HOME/.local/bin"
@@ -28,11 +28,12 @@ tar xzf "/tmp/nvim-linux64.tar.gz" -C "$INSTALL_DIR"
 ln -sf "$INSTALL_DIR/nvim-linux64/bin/nvim" "$BIN_DIR/nvim"
 
 # Create a symlink from nvim to vim if vim is not already installed
-if ! command -v vim >/dev/null 2>&1; then
-    echo "vim command not found. Creating symlink from nvim to vim..."
+if [ ! -e "$BIN_DIR/vim" ]; then
+    echo "No vim found at $BIN_DIR. Creating symlink from nvim to vim..."
     ln -sf "$BIN_DIR/nvim" "$BIN_DIR/vim"
+    echo "Symlink created: $BIN_DIR/vim -> $BIN_DIR/nvim"
 else
-    echo "vim is already installed. Skipping symlink creation."
+    echo "vim already exists at $BIN_DIR. Skipping symlink creation."
 fi
 
 # Function to compare versions
