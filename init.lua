@@ -1,11 +1,9 @@
 -- Basic settings
-vim.cmd('syntax on')  -- Turn syntax highlighting on
 vim.o.backspace = 'indent,eol,start'  -- Make backspace work as expected
-vim.o.encoding = 'utf-8'  -- Set UTF-8 encoding
 vim.o.fileencoding = 'utf-8'  -- Set UTF-8 encoding for file
 vim.o.number = true  -- Turn line numbers on
 vim.o.showmatch = true  -- Highlight matching braces
-vim.o.mouse = 'a'  -- Set mouse mode on
+vim.o.mouse = "a"  -- Set mouse mode on
 vim.o.scrolloff = 5  -- Show context around the cursor
 vim.o.visualbell = false  -- Turn off screen flashing
 vim.o.hlsearch = true  -- Highlight searches
@@ -17,10 +15,10 @@ vim.o.smartindent = true  -- Use smartindent
 vim.o.timeout = true  -- Enable timeout for escape sequences
 vim.o.timeoutlen = 1000  -- Lower the timeout length to 1000ms
 vim.o.textwidth = 0  -- Don't autowrap code
-vim.o.wrapmargin = 0  -- Set wrap margin
-vim.o.clipboard = 'unnamedplus'  -- Use system clipboard
+vim.o.clipboard = "unnamedplus"  -- Use system clipboard
 vim.o.tabstop = 4  -- Set tab width
 vim.o.shiftwidth = 4  -- Set shift width for indent
+vim.o.softtabstop = 4  -- Insert 4 spaces when pressing Tab
 vim.o.expandtab = true  -- Convert tabs to spaces
 
 -- FileType specific settings
@@ -32,8 +30,6 @@ vim.api.nvim_create_autocmd('FileType', {
     pattern = 'python',
     command = 'setlocal equalprg=autopep8\\ -'
 })
-
-vim.g.python_highlight_all = 1
 
 -- Key mappings
 vim.api.nvim_set_keymap('n', '<Space>', ':nohlsearch<Bar>:echo<CR>', { noremap = true, silent = true })
@@ -49,7 +45,7 @@ vim.api.nvim_set_keymap('v', 'p', '"_dP', { noremap = true, silent = true })
 -- Insert mode mappings
 
 -- remove annoying behavior where indentation removed when you enter a #
-vim.api.nvim_set_keymap('i', '#', 'X␈#', { noremap = true, silent = true })
+vim.opt.indentkeys:remove('0#')
 
 -- coc.nvim specific mapping
 -- refresh autocomplete with Ctrl+Space
@@ -72,11 +68,10 @@ require('packer').startup(function(use)
   use { 'neoclide/coc.nvim', branch='release' }
   use 'dense-analysis/ale'
   use 'preservim/nerdcommenter'
-  use { 'nvim-tree/nvim-tree.lua', requires = { 'nvim-tree/nvim-web-devicons', opt = true } }
-  use { 'nvim-lualine/lualine.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true } }
+  use { 'nvim-tree/nvim-tree.lua', requires = { 'nvim-tree/nvim-web-devicons' } }
+  use { 'nvim-lualine/lualine.nvim', requires = { 'nvim-tree/nvim-web-devicons' } }
   use {'akinsho/bufferline.nvim', tag = "*", requires = 'nvim-tree/nvim-web-devicons'}
   use 'tpope/vim-fugitive'
-  use 'flazz/vim-colorschemes'
   use 'kien/rainbow_parentheses.vim'
   use 'cespare/vim-toml'
   use {
@@ -111,7 +106,7 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- Color and basic settings
-vim.cmd[[colorscheme wombat]]
+vim.cmd[[colorscheme wombat_classic]]
 
 -- ALE Settings
 vim.g.ale_virtualtext_cursor = 0
@@ -137,7 +132,13 @@ vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 
 -- lualine
-require('lualine').setup()
+require('lualine').setup {
+  options = {
+    theme = 'wombat',
+    section_separators = '',
+    component_separators = '',
+  },
+}
 
 -- setup with some options
 require("nvim-tree").setup({
@@ -156,45 +157,24 @@ require("nvim-tree").setup({
 })
 
 -- Rainbow Parenthesis
-vim.g.rbpt_loadcmd_toggle = 1
-vim.g.rbpt_max = 18
-vim.g.rbpt_colorpairs = {
-    {'yellow', '#9eb8ff'},
-    {'red',    '#ff3083'},
-    {'gray',   '#c654ff'},
-    {'green',  '#ff8921'},
-    {'brown',  '#dbffa6'},
-    {'blue',   '#ff91f0'},
-    {'magenta','#ffcfa6'},
-    {'cyan',   '#54ff8d'},
-    {'yellow', '#9eb8ff'},
-    {'red',    '#ff3083'},
-    {'gray',   '#c654ff'},
-    {'green',  '#ff8921'},
-    {'brown',  '#dbffa6'},
-    {'blue',   '#ff91f0'},
-    {'magenta','#ffcfa6'},
-    {'cyan',   '#54ff8d'},
-    {'yellow', '#9eb8ff'},
-    {'red',    '#ff3083'}
+require('nvim-treesitter.configs').setup {
+  highlight = {
+    enable = true,
+    -- ...
+  },
+  rainbow = {
+    enable = true,
+    extended_mode = true,
+    max_file_lines = nil,
+  },
 }
 
--- Autocommands for rainbow parentheses
-vim.api.nvim_create_autocmd('VimEnter', {
-    pattern = '*',
-    command = 'RainbowParenthesesActivate'
-})
-vim.api.nvim_create_autocmd('Syntax', {
-    pattern = '*',
-    command = 'RainbowParenthesesLoadRound'
-})
-vim.api.nvim_create_autocmd('Syntax', {
-    pattern = '*',
-    command = 'RainbowParenthesesLoadSquare'
-})
-vim.api.nvim_create_autocmd('VimEnter', {
-    pattern = '*',
-    command = 'RainbowParenthesesLoadBraces'
+-- Reset cursor when leaving neovim (https://github.com/neovim/neovim/issues/4396#issuecomment-1377191592)
+vim.api.nvim_create_autocmd('VimLeave', {
+  callback = function()
+    vim.opt.guicursor = ''
+    vim.fn.chansend(vim.v.stderr, '\x1b[ q')
+  end
 })
 
 -- Resume from previous line
@@ -203,10 +183,11 @@ vim.api.nvim_create_autocmd(
   "BufReadPost",
   {callback = function()
       local row, col = unpack(vim.api.nvim_buf_get_mark(0, "\""))
-      if {row, col} ~= {0, 0} then
-        vim.api.nvim_win_set_cursor(0, {row, 0})
+      if row > 0 and row <= vim.api.nvim_buf_line_count(0) then
+        vim.api.nvim_win_set_cursor(0, {row, col})
       end
     end,
   group = group
   }
 )
+

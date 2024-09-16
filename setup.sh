@@ -1,8 +1,12 @@
 #!/bin/bash
 
 # Variables
-NEOVIM_URL="https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
-INSTALL_DIR="$HOME/.local/bin"
+NEOVIM_URL="https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
+NODEJS_VERSION="v20.17.0"  # You can change this to the desired Node.js version
+NODEJS_DISTRO="linux-x64"  # Adjust if using a different architecture
+NODEJS_URL="https://nodejs.org/dist/$NODEJS_VERSION/node-$NODEJS_VERSION-$NODEJS_DISTRO.tar.xz"
+INSTALL_DIR="$HOME/.local"
+BIN_DIR="$HOME/.local/bin"
 CONFIG_DIR="$HOME/.config/nvim"
 INIT_LUA_PATH="$CONFIG_DIR/init.lua"
 BACKUP_DIR="$CONFIG_DIR/backup"
@@ -10,23 +14,69 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TIMESTAMP=$(date +"%Y%m%d%H%M%S")
 
 # Create necessary directories
-mkdir -p "$INSTALL_DIR"
-mkdir -p "$CONFIG_DIR"
-mkdir -p "$BACKUP_DIR"
+mkdir -p "$BIN_DIR" "$CONFIG_DIR" "$BACKUP_DIR"
 
-# Download Neovim AppImage
+# Download Neovim Tarball
 echo "Downloading Neovim..."
-curl -L "$NEOVIM_URL" -o "$INSTALL_DIR/nvim.appimage"
-chmod u+x "$INSTALL_DIR/nvim.appimage"
+curl -L "$NEOVIM_URL" -o "/tmp/nvim-linux64.tar.gz"
+
+# Extract Neovim
+echo "Extracting Neovim..."
+tar xzf "/tmp/nvim-linux64.tar.gz" -C "$INSTALL_DIR"
 
 # Create a symlink to nvim
-ln -sf "$INSTALL_DIR/nvim.appimage" "$INSTALL_DIR/nvim"
+ln -sf "$INSTALL_DIR/nvim-linux64/bin/nvim" "$BIN_DIR/nvim"
+
+# Create a symlink from nvim to vim if vim is not already installed
+if ! command -v vim >/dev/null 2>&1; then
+    echo "vim command not found. Creating symlink from nvim to vim..."
+    ln -sf "$BIN_DIR/nvim" "$BIN_DIR/vim"
+else
+    echo "vim is already installed. Skipping symlink creation."
+fi
+
+# Function to compare versions
+version_ge() {
+    # Returns true if version $1 >= version $2
+    [ "$(printf '%s\n' "${1#v}" "${2#v}" | sort -V | head -n1)" = "${2#v}" ]
+}
+
+# Check if Node.js is already installed and meets the version requirement
+NODE_INSTALLED=false
+if command -v node >/dev/null 2>&1; then
+    INSTALLED_NODE_VERSION=$(node -v)
+    if version_ge "$INSTALLED_NODE_VERSION" "$NODEJS_VERSION"; then
+        echo "Node.js $INSTALLED_NODE_VERSION is already installed and meets the version requirement."
+        NODE_INSTALLED=true
+    else
+        echo "Node.js $INSTALLED_NODE_VERSION is installed but does not meet the version requirement."
+    fi
+else
+    echo "Node.js is not installed."
+fi
+
+if [ "$NODE_INSTALLED" = false ]; then
+    # Download Node.js
+    echo "Downloading Node.js..."
+    curl -L "$NODEJS_URL" -o "/tmp/node-$NODEJS_VERSION-$NODEJS_DISTRO.tar.xz"
+
+    # Extract Node.js
+    echo "Extracting Node.js..."
+    tar xf "/tmp/node-$NODEJS_VERSION-$NODEJS_DISTRO.tar.xz" -C "$INSTALL_DIR"
+
+    # Create symlinks to node, npm, and npx
+    ln -sf "$INSTALL_DIR/node-$NODEJS_VERSION-$NODEJS_DISTRO/bin/node" "$BIN_DIR/node"
+    ln -sf "$INSTALL_DIR/node-$NODEJS_VERSION-$NODEJS_DISTRO/bin/npm" "$BIN_DIR/npm"
+    ln -sf "$INSTALL_DIR/node-$NODEJS_VERSION-$NODEJS_DISTRO/bin/npx" "$BIN_DIR/npx"
+else
+    echo "Skipping Node.js installation."
+fi
 
 # Ensure ~/.local/bin is in PATH
-if ! echo "$PATH" | grep -q "$INSTALL_DIR"; then
+if ! echo "$PATH" | grep -q "$BIN_DIR"; then
     echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
     export PATH="$HOME/.local/bin:$PATH"
-    echo "$INSTALL_DIR added to PATH."
+    echo "$BIN_DIR added to PATH."
 fi
 
 # Backup existing init.lua if it exists
@@ -53,7 +103,16 @@ fi
 
 # Install plugins
 echo "Installing plugins..."
-nvim --headless +PackerSync +qa
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+
+# Install coc-pyright using CocInstall
+echo "Installing coc-pyright..."
+nvim --headless -c 'CocInstall -sync coc-pyright|q' +q
+
+# Clean up temporary files
+echo "Cleaning up temporary files..."
+rm -f "/tmp/nvim-linux64.tar.gz"
+rm -f "/tmp/node-$NODEJS_VERSION-$NODEJS_DISTRO.tar.xz"
 
 echo "Neovim installation and setup complete."
 
