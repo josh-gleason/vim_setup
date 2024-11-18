@@ -87,8 +87,11 @@ require('packer').startup(function(use)
   }
 end)
 
--- mason
-require("mason").setup()
+-- mason (conditional to avoid issues in first packer install)
+local mason_ok, mason = pcall(require, "mason")
+if mason_ok then
+    mason.setup()
+end
 
 -- bufferline
 require("bufferline").setup{}
