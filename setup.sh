@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-NEOVIM_URL="https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
+NEOVIM_URL="https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz"
 NODEJS_VERSION="v20.17.0"   # LTS version
 NODEJS_DISTRO="linux-x64"
 NODEJS_URL="https://nodejs.org/dist/$NODEJS_VERSION/node-$NODEJS_VERSION-$NODEJS_DISTRO.tar.xz"
@@ -18,14 +18,14 @@ mkdir -p "$BIN_DIR" "$CONFIG_DIR" "$BACKUP_DIR"
 
 # Download Neovim Tarball
 echo "Downloading Neovim..."
-curl -L "$NEOVIM_URL" -o "/tmp/nvim-linux64.tar.gz"
+curl -L "$NEOVIM_URL" -o "/tmp/nvim-linux64-x86_64.tar.gz"
 
 # Extract Neovim
 echo "Extracting Neovim..."
-tar xzf "/tmp/nvim-linux64.tar.gz" -C "$INSTALL_DIR"
+tar xzf "/tmp/nvim-linux64-x86_64.tar.gz" -C "$INSTALL_DIR"
 
 # Create a symlink to nvim
-ln -sf "$INSTALL_DIR/nvim-linux64/bin/nvim" "$BIN_DIR/nvim"
+ln -sf "$INSTALL_DIR/nvim-linux-x86_64/bin/nvim" "$BIN_DIR/nvim"
 
 # Create a symlink from nvim to vim if vim is not already installed
 if [ ! -e "$BIN_DIR/vim" ]; then
@@ -112,7 +112,7 @@ nvim --headless -c 'CocInstall -sync coc-pyright|q' +q
 
 # Clean up temporary files
 echo "Cleaning up temporary files..."
-rm -f "/tmp/nvim-linux64.tar.gz"
+rm -f "/tmp/nvim-linux64-x86_64.tar.gz"
 rm -f "/tmp/node-$NODEJS_VERSION-$NODEJS_DISTRO.tar.xz"
 
 echo "Neovim installation and setup complete."

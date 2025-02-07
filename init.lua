@@ -82,7 +82,7 @@ require('packer').startup(function(use)
     end,
   }
   use {
-      "ViViDboarder/wombat.nvim",
+      "josh-gleason/wombat.nvim",
       requires = "rktjmp/lush.nvim",
   }
 end)
